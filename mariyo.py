@@ -1,22 +1,24 @@
 import pygame
 import sys
+from utils import *
 
 pygame.init()
 
 win = 1200
 win_height = 600
 
-fps = 20
+FPS = 20
+SCORE = 0
 
-Black = (0, 0, 0)
-green = (0, 255, 0)
+BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
 
-Add_new_Rate = 25
-cactus_img = pygame.image.load('images.png')
+ADD_NEW_FLAMS_RATE = 25
+cactus_img = load_image('images.png')
 cactus_img_rect = cactus_img.get_rect()
 cactus_img_rect.left = 0
 
-fir_img = pygame.image.load('nl.jpeg')
+fir_img = load_image('nl.jpeg')
 fir_img_rect = fir_img.get_rect()
 fir_img_rect.left = 0
 
@@ -44,10 +46,10 @@ class Dragon:
     dragon_velcity = 10
 
     def __init__(self):
-        self.dragon_img = pygame.image.load('dra.jpeg')
-        self.dragon_img.rect = self.dragon_img.get_rect()
-        self.dragon_img.rect.width -= 10
-        self.dragon_img.rect.height -= 10
+        self.dragon_img = load_image('dra.jpeg')
+        self.dragon_img_rect = self.dragon_img.get_rect()
+        self.dragon_img_rect.width -= 10
+        self.dragon_img_rect.height -= 10
         self.dragon_img_rect.top = win_height / 2
         self.dragon_img_rect.right = win
         self.up = True
@@ -72,7 +74,7 @@ class Flames:
     flames_velocity = 20
 
     def __init__(self):
-        self.flames = pygame.image.load('fair.jpeg')
+        self.flames = load_image('fair.jpeg')
         self.flames_img = pygame.transform.scale(self.flames, (20, 20))
         self.flames_img_rect = self.flames_img.get_rect()
         self.flames_img_rect.right = dragon.dragon_img_rect.left
@@ -89,7 +91,7 @@ class Mario:
     velocity = 10
 
     def __init__(self):
-        self.mario_img = pygame.image.load('mario.jpeg')
+        self.mario_img = load_image('mario.jpeg')
         self.mario_img_rect = self.mario_img.get_rect()
         self.mario_img_rect.left = 20
         self.mario_img_rect.top = win_height / 2 - 100
@@ -116,10 +118,10 @@ class Mario:
 
 def gameover():
     pygame.mixer.music.stop()
-    music = pygame.mixer.sound('laser.wav')
+    music = load_sound('laser.wav')
     music.play()
     topscore.top_score(SCORE)
-    game_over_img = pygame.image.load('m2.png')
+    game_over_img = load_image('m2.png')
     game_over_img_rect = game_over_img.get_rect()
     game_over_img_rect.center = (win / 2, win_height / 2)
     canvas.blit(game_over_img, game_over_img_rect)
@@ -143,7 +145,7 @@ def gameover():
 def start_game():
     BLACK = pygame.Color("#000000")
     canvas.fill(BLACK)
-    start_img = pygame.image.load('m1.png')
+    start_img = load_image('m1.png')
     start_img_rect = start_img.get_rect()
     start_img_rect.center = (win / 2, win_height / 2)
     canvas.blit(start_img, start_img_rect)
@@ -162,13 +164,13 @@ def start_game():
         pygame.display.update()
 
 
-def Check_level(SCORE):
+def check_level(SCORE):
     global LEVEL
-    if score in range(0, 10):
+    if SCORE in range(0, 10):
         cactus_img_rect.bottom = 50
         fir_img_rect.top = win_height - 50
         LEVEL = 1
-    elif SORE in range(10, 20):
+    elif SCORE in range(10, 20):
         cactus_img_rect.bottom = 100
         fir_img_rect.top = win_height - 100
         LEVEL = 2
@@ -187,14 +189,15 @@ def game_loop():
         global dragon
         dragon = Dragon
         dragon = Dragon()
-        flames = False()
+        flames = False
         mario = Mario()
         add_new_flame_counter = 0
         SCORE = 0
         global HIGH_SCORE
         flames_list = []
-        pygame.mixer.music.load('')
-        pygame.mixer.music.play(-1, 0, 0)
+        # Music Not Ready Yet
+        # pygame.mixer.music.load('')
+        # pygame.mixer.music.play(-1, 0, 0)
         while True:
             canvas.fill(BLACK)
             check_level(SCORE)
